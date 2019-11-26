@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="?attr/appWindowPadding">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        tools:ignore="UselessParent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Auth.TextInputLayout"
+            android:hint="@string/prompt_name">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name"
+                android:inputType="textCapWords"
+                style="@style/Widget.Auth.TextInput" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Auth.TextInputLayout"
+            android:hint="@string/prompt_email"
+            android:layout_marginTop="?attr/appViewInListIndent_small">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email"
+                android:inputType="textEmailAddress"
+                style="@style/Widget.Auth.TextInput"
+                android:ems="10" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Auth.TextInputLayout"
+            android:hint="@string/prompt_password"
+            android:layout_marginTop="?attr/appViewInListIndent_small">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:inputType="textPassword"
+                style="@style/Widget.Auth.TextInput"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Auth.TextInputLayout"
+            android:hint="@string/prompt_re_password"
+            android:layout_marginTop="?attr/appViewInListIndent_small">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/rePassword"
+                android:inputType="textPassword"
+                style="@style/Widget.Auth.TextInput"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RadioGroup
+            android:id="@+id/rgGender"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checkedButton="@id/rbMan"
+            android:orientation="horizontal"
+            android:layout_marginTop="?attr/appViewInListIndent_small">
+            <TextView
+                style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
+                android:id="@+id/text_view_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_gender" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/rbMan"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/radio_gender_man" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/rbWoman"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/radio_gender_woman" />
+        </RadioGroup>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSignUp"
+            style="@style/Widget.Auth.ActionButton"
+            android:text="@string/btn_sign_up" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLinkToSignIn"
+            style="@style/Widget.Auth.LinkButton"
+            android:text="@string/btn_link_to_login" />
+
+    </LinearLayout>
+
+</LinearLayout>

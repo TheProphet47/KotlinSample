@@ -1,4 +1,32 @@
 <resources>
     <string name="app_name">KotlinSample</string>
     <string name="action_settings">Settings</string>
+
+
+    <!-- Auth -->
+    <string name="prompt_name">Full name</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_re_password">Confirm password</string>
+
+    <string name="label_gender">Gender:</string>
+    <string name="radio_gender_man">Man</string>
+    <string name="radio_gender_woman">Woman</string>
+
+    <string name="invalid_name">Not a valid name</string>
+    <string name="invalid_email">Not a valid email</string>
+    <string name="invalid_password">Not a valid password</string>
+    <string name="invalid_password_length">Password must be %s characters</string>
+    <string name="invalid_re_password">Passwords must be the same</string>
+
+    <string name="login_succeed">"Sign in is succeeded"</string>
+    <string name="login_failed">"Sign in is failed"</string>
+    <string name="register_failed">"Sign up is failed"</string>
+    <string name="register_succeed">"Sign up is succeeded"</string>
+
+    <string name="btn_sign_in">Sign in</string>
+    <string name="btn_sign_up">Sign up</string>
+    <string name="btn_link_to_register">Not a member? Sign up now.</string>
+    <string name="btn_link_to_login">Already registered! Login Me.</string>
+
 </resources>

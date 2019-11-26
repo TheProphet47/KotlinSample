@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+
+    <!-- MaterialBase -->
+    <color name="primary">#00bcd4</color>
+    <color name="primaryVariant">#008ba3</color>
+    <color name="onPrimary">#000000</color>
+
+    <color name="secondary">#ef5350</color>
+    <color name="secondaryVariant">#b61827</color>
+    <color name="onSecondary">#000000</color>
+
+    <color name="background">#e1f5fe</color>
+    <color name="onBackground">#000000</color>
+
+    <color name="accent">#8e24aa</color>
+
+    <color name="error">#C51162</color>
+    <color name="onError">#FFFFFF</color>
+
+    <!-- Auth -->
+
 </resources>

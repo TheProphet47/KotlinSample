@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="appWindowPadding" format="reference|dimension"/>
+
+    <attr name="appViewInListIndent_small" format="reference|dimension"/>
+    <attr name="appViewInListIndent_medium" format="reference|dimension"/>
+
+</resources>
