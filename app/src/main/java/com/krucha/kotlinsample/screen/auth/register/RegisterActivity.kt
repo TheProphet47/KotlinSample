@@ -13,8 +13,7 @@ import com.krucha.kotlinsample.screen.auth.AuthViewModelFactory
 import com.krucha.kotlinsample.screen.auth.PASSWORD_LENGTH
 import com.krucha.kotlinsample.screen.auth.afterTextChanged
 import com.krucha.kotlinsample.screen.auth.login.LoginActivity
-import com.krucha.kotlinsample.screen.auth.register.model.RegisterViewData
-import com.krucha.kotlinsample.screen.auth.register.model.RegisteredUser
+import com.krucha.kotlinsample.screen.auth.register.model.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.email
 import kotlinx.android.synthetic.main.activity_register.password
@@ -68,15 +67,12 @@ class RegisterActivity : AppCompatActivity() {
         })
 
         viewModel.registerResult.observe(this, Observer {
-            val registerResult = it ?: return@Observer
-
-            if (registerResult.success != null) {
-                startActivity(Intent(this, LoginActivity::class.java))
-                showRegisterSucceeded(registerResult.success)
-            }
-
-            if (registerResult.error != null) {
-                showRegisterFailed(registerResult.error)
+            when (val registerResult = it ?: return@Observer) {
+                is RegisterResult.Success -> {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    showRegisterSucceeded(registerResult.user)
+                }
+                is RegisterResult.Error -> showRegisterFailed(registerResult.error)
             }
         })
 

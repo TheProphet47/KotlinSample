@@ -7,10 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.features.auth.RegisterRepository
 import com.krucha.kotlinsample.screen.auth.*
-import com.krucha.kotlinsample.screen.auth.register.model.RegisterViewData
-import com.krucha.kotlinsample.screen.auth.register.model.RegisterResult
-import com.krucha.kotlinsample.screen.auth.register.model.RegisterFormState
-import com.krucha.kotlinsample.screen.auth.register.model.RegisteredUser
+import com.krucha.kotlinsample.screen.auth.register.model.*
 
 class RegisterViewModel(app: Application, private val registerRepository: RegisterRepository) : AndroidViewModel(app) {
 
@@ -60,9 +57,9 @@ class RegisterViewModel(app: Application, private val registerRepository: Regist
             registerRepository.register(email, password) { success ->
                 if (success != null) {
                     val registeredUser = RegisteredUser(R.string.register_succeed)
-                    mRegisterResult.value = RegisterResult(success = registeredUser)
+                    mRegisterResult.value = RegisterResult.Success(registeredUser)
                 } else {
-                    mRegisterResult.value = RegisterResult(error = R.string.login_failed)
+                    mRegisterResult.value = RegisterResult.Error(R.string.login_failed)
                 }
             }
         }

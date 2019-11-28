@@ -45,9 +45,9 @@ class LoginViewModel(app: Application, private val loginRepository: LoginReposit
                     val user = loginRepository.user as User
                     val loggedInUser =
                         LoggedInUser(user.name, R.string.login_succeed)
-                    mLoginResult.value = LoginResult(success = loggedInUser)
+                    mLoginResult.value = LoginResult.Success(loggedInUser)
                 } else {
-                    mLoginResult.value = LoginResult(error = R.string.login_failed)
+                    mLoginResult.value = LoginResult.Error(R.string.login_failed)
                 }
             }
         }

@@ -12,6 +12,7 @@ import com.krucha.kotlinsample.screen.auth.AuthViewModelFactory
 import com.krucha.kotlinsample.screen.auth.PASSWORD_LENGTH
 import com.krucha.kotlinsample.screen.auth.afterTextChanged
 import com.krucha.kotlinsample.screen.auth.login.model.LoggedInUser
+import com.krucha.kotlinsample.screen.auth.login.model.LoginResult
 import com.krucha.kotlinsample.screen.auth.login.model.LoginViewData
 import com.krucha.kotlinsample.screen.auth.register.RegisterActivity
 import com.krucha.kotlinsample.screen.main.MainActivity
@@ -58,15 +59,12 @@ class LoginActivity : AppCompatActivity() {
         })
 
         viewModel.loginResult.observe(this, Observer {
-            val loginResult = it ?: return@Observer
-
-            if (loginResult.success != null) {
-                startActivity(Intent(this, MainActivity::class.java))
-                showLoginSucceeded(loginResult.success)
-            }
-
-            if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
+            when(val loginResult = it ?: return@Observer) {
+                is LoginResult.Success -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    showLoginSucceeded(loginResult.user)
+                }
+                is LoginResult.Error -> showLoginFailed(loginResult.error)
             }
         })
 

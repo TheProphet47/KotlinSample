@@ -1,6 +1,9 @@
 package com.krucha.kotlinsample.screen.auth.register.model
 
-data class RegisterResult(
-    val success: RegisteredUser? = null,
-    val error: Int? = null
-)
+import androidx.annotation.StringRes
+
+sealed class RegisterResult {
+
+    data class Success(val user: RegisteredUser) : RegisterResult()
+    data class Error(@StringRes val error: Int) : RegisterResult()
+}
