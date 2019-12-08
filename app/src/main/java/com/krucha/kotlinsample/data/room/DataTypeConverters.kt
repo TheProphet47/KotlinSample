@@ -30,3 +30,17 @@ class GenderTypeConverter {
         return User.Gender.values()[ordinal]
     }
 }
+
+
+class StringListConverter {
+
+    @TypeConverter
+    fun fromList(keys: List<String>?) : String? {
+        return keys?.joinToString(separator = ",")
+    }
+
+    @TypeConverter
+    fun toList(keys: String?) : List<String>? {
+        return keys?.split(",")
+    }
+}

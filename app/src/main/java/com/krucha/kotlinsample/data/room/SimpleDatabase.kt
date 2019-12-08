@@ -4,13 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.krucha.kotlinsample.data.model.Film
 import com.krucha.kotlinsample.data.model.User
 
-@Database(entities = [User::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Film::class], version = 1, exportSchema = false)
 abstract class SimpleDatabase : RoomDatabase() {
 
     abstract fun userDao() : UserDao
-
+    abstract fun filmDao() : FilmDao
 
     companion object {
         private const val DATABASE = "simpleDatabase"

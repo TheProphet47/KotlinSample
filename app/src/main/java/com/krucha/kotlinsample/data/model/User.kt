@@ -13,7 +13,11 @@ data class User(
     @ColumnInfo(name = Field.AGE) val age: Int,
     @ColumnInfo(name = Field.GENDER) val gender: Gender,
     @ColumnInfo(name = Field.BIRTHDAY) val birthday: Date,
-    @PrimaryKey(autoGenerate = true) val id: Long = 0) {
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = Field.ID)
+    val id: Long = 0
+) {
 
     object Table {
         const val NAME = "users"
