@@ -8,5 +8,5 @@ data class FilmWithOwner (
 
     @Relation(entity = User::class, parentColumn = Film.Field.USER_ID,
         entityColumn = User.Field.ID, projection = [User.Field.NAME])
-    val owner: String
+    val owner: String?
 )

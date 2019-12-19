@@ -2,6 +2,9 @@
     <string name="app_name">KotlinSample</string>
     <string name="action_settings">Settings</string>
 
+    <string name="menu_action_delete">Delete</string>
+    <string name="menu_action_edit">Edit</string>
+    <string name="menu_action_view">View</string>
 
     <!-- Auth -->
     <string name="prompt_name">Full name</string>
@@ -28,5 +31,19 @@
     <string name="btn_sign_up">Sign up</string>
     <string name="btn_link_to_register">Not a member? Sign up now.</string>
     <string name="btn_link_to_login">Already registered! Login Me.</string>
+    <string name="title_activity_film_detail">FilmDetailActivity</string>
+
+    <!-- Detail -->
+    <string name="detail_prompt_name">Name</string>
+    <string name="detail_prompt_year">Year</string>
+    <string name="detail_prompt_genre">Genre</string>
+    <string name="detail_prompt_description">Write description</string>
+
+    <string name="detail_msg_film_created">Film was created</string>
+    <string name="detail_msg_film_updated">Film was updated</string>
+    <string name="detail_msg_film_deleted">Film was deleted</string>
+
+    <!-- For tools -->
+    <string name="tools_list_item">List item</string>
 
 </resources>

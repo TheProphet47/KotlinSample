@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.data.model.User
 import com.krucha.kotlinsample.features.auth.LoginRepository
-import com.krucha.kotlinsample.screen.auth.checkEmailForError
-import com.krucha.kotlinsample.screen.auth.checkPasswordForError
+import com.krucha.kotlinsample.utils.checkEmailForError
+import com.krucha.kotlinsample.utils.checkPasswordForError
 import com.krucha.kotlinsample.screen.auth.login.model.LoggedInUser
 import com.krucha.kotlinsample.screen.auth.login.model.LoginViewData
 import com.krucha.kotlinsample.screen.auth.login.model.LoginResult
@@ -26,12 +26,18 @@ class LoginViewModel(app: Application, private val loginRepository: LoginReposit
 
 
     fun emailChanged(email: String) {
-        check { state -> state.copy(emailError = checkEmailForError(email)) }
+        check { state -> state.copy(emailError = checkEmailForError(
+            email
+        )
+        ) }
         viewData.value?.email = email
     }
 
     fun passwordChanged(password: String) {
-        check { state -> state.copy(passwordError = checkPasswordForError(password)) }
+        check { state -> state.copy(passwordError = checkPasswordForError(
+            password
+        )
+        ) }
         viewData.value?.password = password
     }
 

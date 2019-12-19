@@ -36,7 +36,7 @@ class StringListConverter {
 
     @TypeConverter
     fun fromList(keys: List<String>?) : String? {
-        return keys?.joinToString(separator = ",")
+        return keys?.joinToString(",")
     }
 
     @TypeConverter

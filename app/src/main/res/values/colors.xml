@@ -13,7 +13,7 @@
     <color name="background">#e1f5fe</color>
     <color name="onBackground">#000000</color>
 
-    <color name="accent">#8e24aa</color>
+    <color name="accent">#8E24AA</color>
 
     <color name="error">#C51162</color>
     <color name="onError">#FFFFFF</color>

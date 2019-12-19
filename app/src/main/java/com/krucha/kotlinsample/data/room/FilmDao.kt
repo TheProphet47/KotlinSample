@@ -9,13 +9,16 @@ import com.krucha.kotlinsample.data.model.FilmWithOwner
 interface FilmDao {
 
     @Query("SELECT * FROM ${Film.Table.NAME}")
-    fun getAllFilm() : LiveData<List<Film>>
+    fun getAllFilm(): LiveData<List<Film>>
 
     @Query("SELECT * FROM ${Film.Table.NAME} WHERE ${Film.Field.ID} = :id")
-    fun getFilmWithOwner(id: Long) : LiveData<FilmWithOwner>
+    fun getFilm(id: Long): LiveData<Film>
+
+    @Query("SELECT * FROM ${Film.Table.NAME} WHERE ${Film.Field.ID} = :id")
+    suspend fun getFilmWithOwner(id: Long): FilmWithOwner
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(film: Film)
+    suspend fun insert(film: Film): Long
     @Update
     suspend fun update(film: Film)
     @Delete

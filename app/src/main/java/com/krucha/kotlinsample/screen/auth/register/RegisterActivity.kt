@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.data.model.User
 import com.krucha.kotlinsample.screen.auth.AuthViewModelFactory
-import com.krucha.kotlinsample.screen.auth.PASSWORD_LENGTH
-import com.krucha.kotlinsample.screen.auth.afterTextChanged
+import com.krucha.kotlinsample.utils.PASSWORD_LENGTH
+import com.krucha.kotlinsample.utils.afterTextChanged
 import com.krucha.kotlinsample.screen.auth.login.LoginActivity
 import com.krucha.kotlinsample.screen.auth.register.model.*
 import kotlinx.android.synthetic.main.activity_register.*

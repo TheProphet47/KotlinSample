@@ -1,4 +1,5 @@
 <resources>
+
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primaryVariant</item>
@@ -12,7 +13,7 @@
         <item name="android:colorBackground">@color/background</item>
         <item name="colorOnBackground">@color/onBackground</item>
 
-<!--        <item name="android:textColorPrimary">@color/error</item>-->
+        <!--        <item name="android:textColorPrimary">@color/error</item>-->
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -25,7 +26,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Dark" />
 
     <!-- Auth -->
-    
+
     <style name="AppTheme.Auth" parent="AppTheme">
         <item name="appWindowPadding">@dimen/paddingWindow</item>
         <item name="appViewInListIndent_small">@dimen/marginBetweenViewSmall</item>

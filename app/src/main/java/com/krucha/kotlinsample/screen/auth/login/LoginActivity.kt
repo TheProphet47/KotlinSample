@@ -9,8 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.screen.auth.AuthViewModelFactory
-import com.krucha.kotlinsample.screen.auth.PASSWORD_LENGTH
-import com.krucha.kotlinsample.screen.auth.afterTextChanged
+import com.krucha.kotlinsample.utils.PASSWORD_LENGTH
+import com.krucha.kotlinsample.utils.afterTextChanged
 import com.krucha.kotlinsample.screen.auth.login.model.LoggedInUser
 import com.krucha.kotlinsample.screen.auth.login.model.LoginResult
 import com.krucha.kotlinsample.screen.auth.login.model.LoginViewData
@@ -36,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
     private fun bindUi() {
         email.afterTextChanged { text -> viewModel.emailChanged(text) }
         password.afterTextChanged { text -> viewModel.passwordChanged(text) }
+        password.setOnEditorActionListener { _, _, _ -> btnSignIn.callOnClick() }
 
         btnSignIn.setOnClickListener { viewModel.login(getLoginData()) }
         btnLinkToSignUp.setOnClickListener { startActivity(Intent(this, RegisterActivity::class.java)) }

@@ -1,4 +1,4 @@
-package com.krucha.kotlinsample.screen.auth
+package com.krucha.kotlinsample.utils
 
 import android.util.Patterns
 import androidx.annotation.StringRes

@@ -17,18 +17,15 @@ class AuthViewModelFactory(val app: Application) : ViewModelProvider.AndroidView
 
     companion object {
         private val firebase = FirebaseAuth()
-        private val loginRepository = LoginRepository(LoginSource(firebase))
         private val registerRepository = RegisterRepository(firebase)
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        RegisterLog.debug("Qwerty $firebase, login $loginRepository")
-
         return when(modelClass) {
             LoginViewModel::class.java -> {
                 LoginLog.debug("Create LoginViewModel")
-                LoginViewModel(app, loginRepository) as T
+                LoginViewModel(app, LoginRepository.getInstance()) as T
             }
             RegisterViewModel::class.java -> {
                 RegisterLog.debug("Create RegisterViewModel")
