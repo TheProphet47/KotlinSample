@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- For tools-->
+    <string-array name="spinner_items">
+        <item>First</item>
+        <item>Second</item>
+        <item>Third</item>
+    </string-array>
+
+    <string-array name="arrayGenres">
+        <item>drama</item>
+        <item>fantasy</item>
+        <item>adventure</item>
+        <item>historical</item>
+        <item>horror</item>
+        <item>thriller</item>
+        <item>comedy</item>
+        <item>musical</item>
+    </string-array>
+</resources>

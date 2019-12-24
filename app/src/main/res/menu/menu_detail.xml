@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.krucha.kotlinsample.screen.main.MainActivity">
+    <group android:id="@+id/menu_group_view">
+        <item
+            android:id="@+id/menu_action_view"
+            android:orderInCategory="11"
+            android:title="@string/menu_action_view"
+            app:showAsAction="never" />
+    </group>
+    <group android:id="@+id/menu_group_edit">
+        <item
+            android:id="@+id/menu_action_edit"
+            android:orderInCategory="12"
+            android:title="@string/menu_action_edit"
+            app:showAsAction="never" />
+    </group>
+    <group android:id="@+id/menu_group_delete">
+        <item
+            android:id="@+id/menu_action_delete"
+            android:orderInCategory="13"
+            android:title="@string/menu_action_delete"
+            app:showAsAction="never" />
+    </group>
+</menu>

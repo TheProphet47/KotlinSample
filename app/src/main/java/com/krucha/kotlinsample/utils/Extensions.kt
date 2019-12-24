@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.krucha.kotlinsample.screen.main.RecyclerItemClickListener
 
-fun TextInputEditText.afterTextChanged(handler: (String) -> Unit) {
+inline fun TextInputEditText.afterTextChanged(crossinline handler: (String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(editable: Editable?) {
             handler(editable.toString())
@@ -18,7 +18,7 @@ fun TextInputEditText.afterTextChanged(handler: (String) -> Unit) {
     })
 }
 
-fun RecyclerView.setItemClickListener(action: (View, Int) -> Unit) {
+inline fun RecyclerView.setItemClickListener(crossinline action: (View, Int) -> Unit) {
     addOnItemTouchListener(RecyclerItemClickListener(
         object : RecyclerItemClickListener.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
