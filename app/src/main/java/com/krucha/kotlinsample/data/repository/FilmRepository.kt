@@ -1,14 +1,14 @@
 package com.krucha.kotlinsample.data.repository
 
-import androidx.lifecycle.LiveData
 import com.krucha.kotlinsample.data.model.Film
 import com.krucha.kotlinsample.data.model.FilmWithOwner
 import com.krucha.kotlinsample.data.room.FilmDao
+import javax.inject.Inject
 
-class FilmRepository(private val dao : FilmDao) {
+class FilmRepository @Inject constructor(private val dao : FilmDao) {
     val films = dao.getAllFilm()
 
-    fun getFilm(id: Long): LiveData<Film> {
+    suspend fun getFilm(id: Long): Film {
         return dao.getFilm(id)
     }
 

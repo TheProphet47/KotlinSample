@@ -1,9 +1,8 @@
 package com.krucha.kotlinsample.screen.auth.login
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.data.model.User
 import com.krucha.kotlinsample.features.auth.LoginRepository
@@ -13,8 +12,9 @@ import com.krucha.kotlinsample.screen.auth.login.model.LoggedInUser
 import com.krucha.kotlinsample.screen.auth.login.model.LoginViewData
 import com.krucha.kotlinsample.screen.auth.login.model.LoginResult
 import com.krucha.kotlinsample.screen.auth.login.model.LoginFormState
+import javax.inject.Inject
 
-class LoginViewModel(app: Application, private val loginRepository: LoginRepository) : AndroidViewModel(app) {
+class LoginViewModel @Inject constructor(private val loginRepository: LoginRepository) : ViewModel() {
 
     private val mFormState = MutableLiveData<LoginFormState>()
     private val mLoginResult = MutableLiveData<LoginResult>()
@@ -26,18 +26,12 @@ class LoginViewModel(app: Application, private val loginRepository: LoginReposit
 
 
     fun emailChanged(email: String) {
-        check { state -> state.copy(emailError = checkEmailForError(
-            email
-        )
-        ) }
+        check { state -> state.copy(emailError = checkEmailForError(email)) }
         viewData.value?.email = email
     }
 
     fun passwordChanged(password: String) {
-        check { state -> state.copy(passwordError = checkPasswordForError(
-            password
-        )
-        ) }
+        check { state -> state.copy(passwordError = checkPasswordForError(password)) }
         viewData.value?.password = password
     }
 
@@ -47,10 +41,11 @@ class LoginViewModel(app: Application, private val loginRepository: LoginReposit
 
         if (!email.isNullOrBlank() && !password.isNullOrBlank()) {
             loginRepository.login(email, password) { success ->
+                LoginLog.debug("Login = $success, user = ${loginRepository.user}")
+
                 if (success) {
                     val user = loginRepository.user as User
-                    val loggedInUser =
-                        LoggedInUser(user.name, R.string.login_succeed)
+                    val loggedInUser = LoggedInUser(user.name, R.string.login_succeed)
                     mLoginResult.value = LoginResult.Success(loggedInUser)
                 } else {
                     mLoginResult.value = LoginResult.Error(R.string.login_failed)

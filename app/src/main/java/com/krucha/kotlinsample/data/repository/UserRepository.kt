@@ -2,8 +2,9 @@ package com.krucha.kotlinsample.data.repository
 
 import com.krucha.kotlinsample.data.model.User
 import com.krucha.kotlinsample.data.room.UserDao
+import javax.inject.Inject
 
-class UserRepository(private val dao : UserDao) {
+class UserRepository @Inject constructor(private val dao : UserDao) {
     val users = dao.getAllUsers()
 
     fun getUser(email: String) = dao.getUserBy(email)

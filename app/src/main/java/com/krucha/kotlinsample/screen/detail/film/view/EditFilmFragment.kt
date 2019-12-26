@@ -64,7 +64,7 @@ class EditFilmFragment : BaseFilmFragment() {
 
             genreRvAdapter.genres = data.currentGenre
 
-            data.imageUri?.let { detailImage.setImageURI(it) }
+            data.imageUri?.let { viewModel.setImage(it) }
         })
 
         viewModel.imageUri.observe(this as LifecycleOwner, Observer {uri ->

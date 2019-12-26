@@ -12,7 +12,7 @@ interface FilmDao {
     fun getAllFilm(): LiveData<List<Film>>
 
     @Query("SELECT * FROM ${Film.Table.NAME} WHERE ${Film.Field.ID} = :id")
-    fun getFilm(id: Long): LiveData<Film>
+    suspend fun getFilm(id: Long): Film
 
     @Query("SELECT * FROM ${Film.Table.NAME} WHERE ${Film.Field.ID} = :id")
     suspend fun getFilmWithOwner(id: Long): FilmWithOwner

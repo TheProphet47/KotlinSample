@@ -19,6 +19,8 @@ buildscript {
             'archLifecycle'     : '2.2.0-rc01',
             'androidxArch'      : '2.1.0',
             'material'          : '1.2.0-alpha01',
+            'dagger'            : '2.25.3',
+            'timber'            : '4.7.1',
     ]
 
     repositories {

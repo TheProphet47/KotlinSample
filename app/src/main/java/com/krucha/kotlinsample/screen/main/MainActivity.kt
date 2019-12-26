@@ -8,10 +8,12 @@ import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.krucha.kotlinsample.CustomLog
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.data.model.Film
 import com.krucha.kotlinsample.data.repository.FilmRepository
-import com.krucha.kotlinsample.data.room.SimpleDatabase
+import com.krucha.kotlinsample.data.room.SampleDatabase
+import com.krucha.kotlinsample.di.injector
 import com.krucha.kotlinsample.features.auth.LoginRepository
 import com.krucha.kotlinsample.screen.detail.film.view.DetailFilmActivity
 import com.krucha.kotlinsample.screen.detail.film.viewmodel.DetailScreen
@@ -20,10 +22,14 @@ import com.krucha.kotlinsample.utils.setItemClickListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var filmsRvAdapter: FilmsRvAdapter
+    @Inject lateinit var filmsRvAdapter: FilmsRvAdapter
+    @Inject lateinit var filmRepository: FilmRepository
+    @Inject lateinit var loginRepository: LoginRepository
+
     lateinit var films: LiveData<List<Film>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,11 +37,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        val user = LoginRepository.getInstance().user
+        injector.inject(this)
 
-        films = FilmRepository(dao = SimpleDatabase.getInstance(this).filmDao()).films
+        val user = loginRepository.user
+        films = filmRepository.films
 
-        filmsRvAdapter = FilmsRvAdapter(this)
         mainRvFilms.adapter = filmsRvAdapter
         mainRvFilms.layoutManager = LinearLayoutManager(this)
         mainRvFilms.setItemClickListener { _, position ->
@@ -52,13 +58,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         mainFab.setOnClickListener {
-            val newFilmId = runBlocking {
-                FilmRepository(dao = SimpleDatabase.getInstance(this@MainActivity).filmDao())
-                    .insert(Film(userId = user?.id))
-            }
-
             val intent = Intent(this@MainActivity, DetailFilmActivity::class.java)
-            intent.putExtra(Film.Table.NAME + Film.Field.ID, newFilmId)
             intent.putExtra(DetailScreen::class.java.simpleName, DetailScreen.Edit())
             intent.putExtra(DetailFilmActivity.ARG_CAN_DELETE, true)
             startActivity(intent)

@@ -10,8 +10,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.data.model.Film
+import javax.inject.Inject
 
-class FilmsRvAdapter(context: Context) : RecyclerView.Adapter<FilmsRvAdapter.ViewHolder>() {
+class FilmsRvAdapter @Inject constructor(context: Context) : RecyclerView.Adapter<FilmsRvAdapter.ViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
     var films = emptyList<Film>()

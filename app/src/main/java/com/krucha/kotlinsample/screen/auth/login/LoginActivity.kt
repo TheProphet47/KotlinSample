@@ -8,7 +8,7 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.krucha.kotlinsample.R
-import com.krucha.kotlinsample.screen.auth.AuthViewModelFactory
+import com.krucha.kotlinsample.di.injector
 import com.krucha.kotlinsample.utils.PASSWORD_LENGTH
 import com.krucha.kotlinsample.utils.afterTextChanged
 import com.krucha.kotlinsample.screen.auth.login.model.LoggedInUser
@@ -20,14 +20,13 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var viewModel: LoginViewModel
+    private val viewModel: LoginViewModel by lazy {
+        ViewModelProvider(this, injector.loginViewModelFactory()).get(LoginViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-        viewModel = ViewModelProvider(this, AuthViewModelFactory(application))
-            .get(LoginViewModel::class.java)
 
         bindUi()
         bindViewModel()

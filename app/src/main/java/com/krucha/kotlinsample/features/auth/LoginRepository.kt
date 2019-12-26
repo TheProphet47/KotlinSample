@@ -1,27 +1,12 @@
 package com.krucha.kotlinsample.features.auth
 
 import com.krucha.kotlinsample.data.model.User
+import com.krucha.kotlinsample.di.scope.PerApp
 import com.krucha.kotlinsample.features.auth.firebase.FirebaseAuth
+import javax.inject.Inject
 
-class LoginRepository(private val source: LoginSource) {
-
-    companion object {
-        @Volatile
-        private var INSTANCE: LoginRepository? = null
-
-        fun getInstance() : LoginRepository {
-            val tempInstance = INSTANCE
-            if (tempInstance != null) {
-                return tempInstance
-            }
-
-            synchronized(this) {
-                val instance = LoginRepository(LoginSource(FirebaseAuth()))
-                INSTANCE = instance
-                return instance
-            }
-        }
-    }
+@PerApp
+class LoginRepository @Inject constructor(private val source: LoginSource) {
 
     var user: User? = null
         private set
@@ -31,7 +16,6 @@ class LoginRepository(private val source: LoginSource) {
 
 
     fun login(username: String, password: String, callback: (Boolean) -> Unit) {
-        val lock = Object()
         source.login(username, password) {
             user = it
             callback(user != null)

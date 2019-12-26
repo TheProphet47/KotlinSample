@@ -9,10 +9,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.data.model.User
-import com.krucha.kotlinsample.screen.auth.AuthViewModelFactory
+import com.krucha.kotlinsample.di.injector
+import com.krucha.kotlinsample.screen.SimpleViewModelFactory
 import com.krucha.kotlinsample.utils.PASSWORD_LENGTH
 import com.krucha.kotlinsample.utils.afterTextChanged
 import com.krucha.kotlinsample.screen.auth.login.LoginActivity
+import com.krucha.kotlinsample.screen.auth.login.LoginViewModel
 import com.krucha.kotlinsample.screen.auth.register.model.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.email
@@ -20,14 +22,13 @@ import kotlinx.android.synthetic.main.activity_register.password
 
 class RegisterActivity : AppCompatActivity() {
 
-    lateinit var viewModel: RegisterViewModel
+    private val viewModel: RegisterViewModel by lazy {
+        ViewModelProvider(this, injector.registerViewModelFactory()).get(RegisterViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-
-        viewModel = ViewModelProvider(this, AuthViewModelFactory(application))
-            .get(RegisterViewModel::class.java)
 
         bindUi()
         bindViewModel()

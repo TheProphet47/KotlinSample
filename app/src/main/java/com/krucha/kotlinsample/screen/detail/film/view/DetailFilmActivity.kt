@@ -11,8 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.data.model.Film
+import com.krucha.kotlinsample.di.injector
 import com.krucha.kotlinsample.screen.detail.DetailLog
-import com.krucha.kotlinsample.screen.detail.DetailViewModelFactory
 import com.krucha.kotlinsample.screen.detail.film.viewmodel.ActionResult
 import com.krucha.kotlinsample.screen.detail.film.viewmodel.DetailFilmViewModel
 import com.krucha.kotlinsample.screen.detail.film.viewmodel.DetailScreen
@@ -25,15 +25,24 @@ class DetailFilmActivity : AppCompatActivity() {
         const val ARG_CAN_DELETE = "isCanDelete"
     }
 
-    private lateinit var viewModel: DetailFilmViewModel
-    private var isActionDeleteVisible = false
+    private val viewModel: DetailFilmViewModel by lazy {
+        ViewModelProvider(this, injector.detailFilmViewModelFactory())[DetailFilmViewModel::class.java]
+    }
+
+    private val isActionDeleteVisible by lazy {
+        intent.getBooleanExtra(ARG_CAN_DELETE, false)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_film_detail)
         setSupportActionBar(toolbar)
 
-        isActionDeleteVisible = intent.getBooleanExtra(ARG_CAN_DELETE, false)
+        val filmId: Long? =
+            if (intent.hasExtra(Film.Table.NAME + Film.Field.ID))
+                intent.getLongExtra(Film.Table.NAME + Film.Field.ID, 0)
+            else null
+        viewModel.start(filmId)
 
         bindViewModel()
         chooseStartMode()
@@ -45,12 +54,7 @@ class DetailFilmActivity : AppCompatActivity() {
     }
 
     private fun bindViewModel() {
-        val filmId = intent.getLongExtra(Film.Table.NAME + Film.Field.ID, 0)
-        val factory = DetailViewModelFactory(application)
-        factory.filmId = filmId
-        viewModel = ViewModelProvider(this, factory)[DetailFilmViewModel::class.java]
-
-        viewModel.detailScreen.observe(this, Observer {
+                viewModel.detailScreen.observe(this, Observer {
             val screen = it ?: return@Observer
             DetailLog.debug("Activate ${screen.javaClass.simpleName}")
 
@@ -77,8 +81,6 @@ class DetailFilmActivity : AppCompatActivity() {
                 is ActionResult.Remove -> finish()
             }
         })
-
-        DetailLog.debug("ViewModel bound")
     }
 
 

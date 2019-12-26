@@ -7,16 +7,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.data.model.Film
-import com.krucha.kotlinsample.data.model.User
 import com.krucha.kotlinsample.data.repository.FilmRepository
+import com.krucha.kotlinsample.features.auth.LoginRepository
 import com.krucha.kotlinsample.screen.detail.DetailLog
 import com.krucha.kotlinsample.screen.detail.film.model.DataForFilm
 import com.krucha.kotlinsample.screen.detail.film.model.EditLiveData
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DetailFilmViewModel(private val filmRepository: FilmRepository,
-                          private val filmId: Long,
-                          private val currentUser: User) : ViewModel() {
+class DetailFilmViewModel @Inject constructor(private val filmRepository: FilmRepository,
+                                              private val loginRepository: LoginRepository)
+    : ViewModel() {
 
     private val mTypeScreen = MutableLiveData<DetailScreen>()
     val detailScreen: LiveData<DetailScreen> = mTypeScreen
@@ -26,16 +27,39 @@ class DetailFilmViewModel(private val filmRepository: FilmRepository,
     private val mImageUri = MutableLiveData<Uri>()
     val imageUri: LiveData<Uri> = mImageUri
 
-    val film: LiveData<Film> = filmRepository.getFilm(filmId)
-    val editData = EditLiveData(film)
+    private val mFilm = MutableLiveData<Film>()
+    private val filmId: Long?
+        get() = mFilm.value?.id
+
+    val film: LiveData<Film> = mFilm
+    val editData = EditLiveData(mFilm)
+
+
+    fun start(filmId: Long?) {
+        viewModelScope.launch {
+            if (filmId == null) {
+                val newFilmId = filmRepository.insert(Film(userId = loginRepository.user?.id))
+                mFilm.value = filmRepository.getFilm(newFilmId)
+                DetailLog.debug("DetailViewModel created new film with Id: $newFilmId")
+            } else {
+                mFilm.value = filmRepository.getFilm(filmId)
+                DetailLog.debug("DetailViewModel started with filmId: $filmId")
+            }
+        }
+    }
 
     fun save(data: DataForFilm) {
         viewModelScope.launch {
-            val filmEntity = data.toFilm(filmId, currentUser.id, imageUri.value)
-            filmRepository.update(filmEntity)
-            DetailLog.debug("Update film: $filmEntity")
+            val filmId = this@DetailFilmViewModel.filmId
 
-            mActionResult.value = ActionResult.Update(R.string.detail_msg_film_updated)
+            if (filmId != null) {
+                val filmEntity = data.toFilm(filmId, loginRepository.user?.id, imageUri.value)
+                filmRepository.update(filmEntity)
+                mFilm.value = filmEntity
+
+                DetailLog.debug("Update film: $filmEntity")
+                mActionResult.value = ActionResult.Update(R.string.detail_msg_film_updated)
+            }
         }
     }
 

@@ -1,15 +1,15 @@
 package com.krucha.kotlinsample.screen.auth.register
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.features.auth.RegisterRepository
 import com.krucha.kotlinsample.screen.auth.register.model.*
 import com.krucha.kotlinsample.utils.*
+import javax.inject.Inject
 
-class RegisterViewModel(app: Application, private val registerRepository: RegisterRepository) : AndroidViewModel(app) {
+class RegisterViewModel @Inject constructor(private val registerRepository: RegisterRepository) : ViewModel() {
 
     private val mFormState = MutableLiveData<RegisterFormState>()
     private val mRegisterResult = MutableLiveData<RegisterResult>()
@@ -21,34 +21,24 @@ class RegisterViewModel(app: Application, private val registerRepository: Regist
 
 
     fun nameChanged(name: String) {
-        check { state -> state.copy(nameError = checkNameForError(
-            name
-        )
-        ) }
+        check { state -> state.copy(nameError = checkNameForError(name)) }
         viewData.value?.name = name
     }
 
     fun emailChanged(email: String) {
-        check { state -> state.copy(emailError = checkEmailForError(
-            email
-        )
-        ) }
+        check { state -> state.copy(emailError = checkEmailForError(email)) }
         viewData.value?.email = email
     }
 
     fun passwordChanged(password: String) {
-        check { state -> state.copy(passwordError = checkPasswordForError(
-            password
-        )
-        ) }
+        check { state -> state.copy(passwordError = checkPasswordForError(password)) }
         viewData.value?.password = password
 
         val rePassword = viewData.value?.rePassword
         if (!rePassword.isNullOrEmpty()) {
-            check { state -> state.copy(rePasswordError = checkRePasswordForError(
-                TwoPasswords(password, rePassword)
-            )
-            ) }
+            check { state -> state.copy(
+                rePasswordError = checkRePasswordForError(TwoPasswords(password, rePassword)))
+            }
         }
     }
 
@@ -57,10 +47,9 @@ class RegisterViewModel(app: Application, private val registerRepository: Regist
 
         val password = viewData.value?.password
         if (!password.isNullOrEmpty()) {
-            check { state -> state.copy(rePasswordError = checkRePasswordForError(
-                TwoPasswords(password, rePassword)
-            )
-            ) }
+            check { state -> state.copy(
+                rePasswordError = checkRePasswordForError(TwoPasswords(password, rePassword)))
+            }
         }
     }
 
