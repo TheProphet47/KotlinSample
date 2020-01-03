@@ -18,7 +18,7 @@ data class Film(
     @ColumnInfo(name = Field.IMAGE_PATH) val imagePath: String? = null,
     @ColumnInfo(name = Field.GENRES) val genres: List<String>? = null,
 
-    @ColumnInfo(name = Field.USER_ID) val userId: Long? = null,
+    @ColumnInfo(name = Field.USER_ID) val userId: String? = null,
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = Field.ID)

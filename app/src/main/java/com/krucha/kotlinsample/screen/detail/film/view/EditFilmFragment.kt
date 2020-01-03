@@ -14,10 +14,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.krucha.kotlinsample.R
-import com.krucha.kotlinsample.screen.detail.DetailLog
 import com.krucha.kotlinsample.screen.detail.film.model.DataForFilm
 import kotlinx.android.synthetic.main.fragment_film_edit.*
 import kotlinx.android.synthetic.main.part_genre.*
+import timber.log.Timber
 
 class EditFilmFragment : BaseFilmFragment() {
 
@@ -35,7 +35,7 @@ class EditFilmFragment : BaseFilmFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        DetailLog.debug("FilmEditFragment")
+        Timber.d("FilmEditFragment")
         return inflater.inflate(R.layout.fragment_film_edit, container, false)
     }
 
@@ -52,7 +52,7 @@ class EditFilmFragment : BaseFilmFragment() {
 
     private fun bindViewModel() {
         viewModel.editData.observe(this as LifecycleOwner, Observer {editData ->
-            DetailLog.debug("Data received: $editData")
+            Timber.d("Data received: $editData")
             val data = editData ?: return@Observer
 
             detailName.setText(data.name)

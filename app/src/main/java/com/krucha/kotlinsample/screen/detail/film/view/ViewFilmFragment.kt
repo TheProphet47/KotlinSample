@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.krucha.kotlinsample.R
-import com.krucha.kotlinsample.screen.detail.DetailLog
 import com.krucha.kotlinsample.screen.detail.film.model.DisplayedDataView
 import kotlinx.android.synthetic.main.fragment_film_view.*
+import timber.log.Timber
 
 class ViewFilmFragment : BaseFilmFragment() {
 
@@ -20,7 +20,7 @@ class ViewFilmFragment : BaseFilmFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        DetailLog.debug("FilmViewFragment")
+        Timber.d("FilmViewFragment")
         return inflater.inflate(R.layout.fragment_film_view, container, false)
     }
 
@@ -36,7 +36,7 @@ class ViewFilmFragment : BaseFilmFragment() {
 
     private fun bindViewModel() {
         viewModel.film.observe(this as LifecycleOwner, Observer {film ->
-            DetailLog.debug("data received: $film")
+            Timber.d("data received: $film")
             val data = film?.let { DisplayedDataView.fromFilm(it) } ?: return@Observer
 
             detailName.text = data.name

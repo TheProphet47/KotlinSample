@@ -12,12 +12,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.data.model.Film
 import com.krucha.kotlinsample.di.injector
-import com.krucha.kotlinsample.screen.detail.DetailLog
 import com.krucha.kotlinsample.screen.detail.film.viewmodel.ActionResult
 import com.krucha.kotlinsample.screen.detail.film.viewmodel.DetailFilmViewModel
 import com.krucha.kotlinsample.screen.detail.film.viewmodel.DetailScreen
 
 import kotlinx.android.synthetic.main.activity_film_detail.*
+import timber.log.Timber
 
 class DetailFilmActivity : AppCompatActivity() {
 
@@ -56,7 +56,7 @@ class DetailFilmActivity : AppCompatActivity() {
     private fun bindViewModel() {
                 viewModel.detailScreen.observe(this, Observer {
             val screen = it ?: return@Observer
-            DetailLog.debug("Activate ${screen.javaClass.simpleName}")
+            Timber.d("Activate ${screen.javaClass.simpleName}")
 
             if (screen.isFab) detailFab.show() else detailFab.hide()
 

@@ -39,8 +39,6 @@ class LoginActivity : AppCompatActivity() {
 
         btnSignIn.setOnClickListener { viewModel.login(getLoginData()) }
         btnLinkToSignUp.setOnClickListener { startActivity(Intent(this, RegisterActivity::class.java)) }
-
-        LoginLog.debug("UI bound")
     }
 
     private fun bindViewModel() {
@@ -67,8 +65,6 @@ class LoginActivity : AppCompatActivity() {
                 is LoginResult.Error -> showLoginFailed(loginResult.error)
             }
         })
-
-        LoginLog.debug("ViewModel bound")
     }
 
 

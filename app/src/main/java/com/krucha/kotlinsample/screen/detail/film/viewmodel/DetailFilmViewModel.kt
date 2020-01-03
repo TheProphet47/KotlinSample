@@ -1,18 +1,15 @@
 package com.krucha.kotlinsample.screen.detail.film.viewmodel
 
 import android.net.Uri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.data.model.Film
 import com.krucha.kotlinsample.data.repository.FilmRepository
 import com.krucha.kotlinsample.features.auth.LoginRepository
-import com.krucha.kotlinsample.screen.detail.DetailLog
 import com.krucha.kotlinsample.screen.detail.film.model.DataForFilm
 import com.krucha.kotlinsample.screen.detail.film.model.EditLiveData
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class DetailFilmViewModel @Inject constructor(private val filmRepository: FilmRepository,
@@ -40,10 +37,10 @@ class DetailFilmViewModel @Inject constructor(private val filmRepository: FilmRe
             if (filmId == null) {
                 val newFilmId = filmRepository.insert(Film(userId = loginRepository.user?.id))
                 mFilm.value = filmRepository.getFilm(newFilmId)
-                DetailLog.debug("DetailViewModel created new film with Id: $newFilmId")
+                Timber.d("DetailViewModel created new film with Id: $newFilmId")
             } else {
                 mFilm.value = filmRepository.getFilm(filmId)
-                DetailLog.debug("DetailViewModel started with filmId: $filmId")
+                Timber.d("DetailViewModel started with filmId: $filmId")
             }
         }
     }
@@ -57,7 +54,7 @@ class DetailFilmViewModel @Inject constructor(private val filmRepository: FilmRe
                 filmRepository.update(filmEntity)
                 mFilm.value = filmEntity
 
-                DetailLog.debug("Update film: $filmEntity")
+                Timber.d("Update film: $filmEntity")
                 mActionResult.value = ActionResult.Update(R.string.detail_msg_film_updated)
             }
         }
@@ -65,7 +62,7 @@ class DetailFilmViewModel @Inject constructor(private val filmRepository: FilmRe
 
     fun delete() {
         viewModelScope.launch {
-            DetailLog.debug("Delete film: ${film.value}")
+            Timber.d("Delete film: ${film.value}")
             filmRepository.delete(film.value)
             mActionResult.value = ActionResult.Remove()
         }

@@ -9,7 +9,7 @@ data class DataForFilm (
     val genre: List<String>? = null,
     val description: String? = null
 ) {
-    fun toFilm(id: Long, userId: Long?, imageUri: Uri?): Film {
+    fun toFilm(id: Long, userId: String?, imageUri: Uri?): Film {
         return Film(id = id, userId = userId, imagePath = imageUri?.toString(),
             name = name, year = year, genres = genre, description = description)
     }

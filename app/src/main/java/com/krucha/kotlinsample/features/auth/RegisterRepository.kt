@@ -1,15 +1,17 @@
 package com.krucha.kotlinsample.features.auth
 
-import com.krucha.kotlinsample.data.TestData
-import com.krucha.kotlinsample.data.model.User
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
-import kotlin.random.Random
 
-class RegisterRepository @Inject constructor(private val service: IRegister) {
+class RegisterRepository @Inject constructor(private val service: IRegister)
+    : AuthScope by AuthScopeImpl {
 
-    fun register(username: String, password: String, callback: (User?) -> Unit) {
-        service.register()
+    init {
+        Timber.d("RegisterRep $service")
+    }
 
-        callback(if (Random.nextInt(2) == 0) TestData.user else null)
+    suspend fun register(email: String, password: String) = withContext(authScope.coroutineContext) {
+        return@withContext service.register(email, password)
     }
 }

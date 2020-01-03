@@ -10,11 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.data.model.User
 import com.krucha.kotlinsample.di.injector
-import com.krucha.kotlinsample.screen.SimpleViewModelFactory
 import com.krucha.kotlinsample.utils.PASSWORD_LENGTH
 import com.krucha.kotlinsample.utils.afterTextChanged
 import com.krucha.kotlinsample.screen.auth.login.LoginActivity
-import com.krucha.kotlinsample.screen.auth.login.LoginViewModel
 import com.krucha.kotlinsample.screen.auth.register.model.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.email
@@ -42,8 +40,6 @@ class RegisterActivity : AppCompatActivity() {
 
         btnSignUp.setOnClickListener { viewModel.register(getRegisterViewData()) }
         btnLinkToSignIn.setOnClickListener { startActivity(Intent(this, LoginActivity::class.java)) }
-
-        RegisterLog.debug("UI bound")
     }
 
     private fun bindViewModel() {
@@ -76,8 +72,6 @@ class RegisterActivity : AppCompatActivity() {
                 is RegisterResult.Error -> showRegisterFailed(registerResult.error)
             }
         })
-
-        RegisterLog.debug("ViewModel bound")
     }
 
 

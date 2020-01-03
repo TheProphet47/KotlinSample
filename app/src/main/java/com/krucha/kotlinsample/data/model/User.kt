@@ -8,15 +8,15 @@ import java.util.*
 @Entity(tableName = User.Table.NAME)
 @TypeConverters(GenderTypeConverter::class, DateTypeConverter::class)
 data class User(
-    @ColumnInfo(name = Field.EMAIL) val email: String,
-    @ColumnInfo(name = Field.NAME) val name: String,
-    @ColumnInfo(name = Field.AGE) val age: Int,
-    @ColumnInfo(name = Field.GENDER) val gender: Gender,
-    @ColumnInfo(name = Field.BIRTHDAY) val birthday: Date,
+    @ColumnInfo(name = Field.EMAIL) val email: String? = null,
+    @ColumnInfo(name = Field.NAME) val name: String? = null,
+    @ColumnInfo(name = Field.AGE) val age: Int? = null,
+    @ColumnInfo(name = Field.GENDER) val gender: Gender? = null,
+    @ColumnInfo(name = Field.BIRTHDAY) val birthday: Date? = null,
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = Field.ID)
-    val id: Long = 0
+    val id: String
 ) {
 
     object Table {

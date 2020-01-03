@@ -3,7 +3,6 @@ package com.krucha.kotlinsample.data.room
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.krucha.kotlinsample.CustomLog
 import com.krucha.kotlinsample.data.TestData
 import com.krucha.kotlinsample.data.model.Film
 import com.krucha.kotlinsample.data.model.User
@@ -37,8 +36,6 @@ abstract class SampleDatabase : RoomDatabase() {
         }
 
         private suspend fun firstFillDatabase(userDao: UserDao, filmDao: FilmDao) {
-            CustomLog("DB").debug("Fill database")
-
             userDao.insert(TestData.user)
             filmDao.insert(TestData.film1)
             filmDao.insert(TestData.film2)

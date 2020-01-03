@@ -3,6 +3,7 @@ package com.krucha.kotlinsample.screen.auth.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.data.model.User
 import com.krucha.kotlinsample.features.auth.LoginRepository
@@ -12,9 +13,13 @@ import com.krucha.kotlinsample.screen.auth.login.model.LoggedInUser
 import com.krucha.kotlinsample.screen.auth.login.model.LoginViewData
 import com.krucha.kotlinsample.screen.auth.login.model.LoginResult
 import com.krucha.kotlinsample.screen.auth.login.model.LoginFormState
+import com.krucha.kotlinsample.utils.Result
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
-class LoginViewModel @Inject constructor(private val loginRepository: LoginRepository) : ViewModel() {
+class LoginViewModel @Inject constructor(private val loginRepository: LoginRepository) :
+    ViewModel() {
 
     private val mFormState = MutableLiveData<LoginFormState>()
     private val mLoginResult = MutableLiveData<LoginResult>()
@@ -36,20 +41,17 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
     }
 
     fun login(loginData: LoginViewData) {
-        val email = loginData.email
-        val password = loginData.password
+        if (!loginData.isFilled() || mFormState.value?.isDataValid != true) return
 
-        if (!email.isNullOrBlank() && !password.isNullOrBlank()) {
-            loginRepository.login(email, password) { success ->
-                LoginLog.debug("Login = $success, user = ${loginRepository.user}")
+        viewModelScope.launch {
+            val loginResult = loginRepository.login(loginData.email as String, loginData.password as String)
 
-                if (success) {
-                    val user = loginRepository.user as User
-                    val loggedInUser = LoggedInUser(user.name, R.string.login_succeed)
-                    mLoginResult.value = LoginResult.Success(loggedInUser)
-                } else {
-                    mLoginResult.value = LoginResult.Error(R.string.login_failed)
-                }
+            Timber.d("Login result: ${loginResult.toString()}")
+            if (loginResult is Result.Success) {
+                val loggedInUser = LoggedInUser(loginResult.data.name, R.string.login_succeed)
+                mLoginResult.value = LoginResult.Success(loggedInUser)
+            } else {
+                mLoginResult.value = LoginResult.Error(R.string.login_failed)
             }
         }
     }
@@ -62,6 +64,5 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
                 && viewData.value?.isFilled() ?: false
 
         mFormState.value = newState.copy(isDataValid = isValid)
-        LoginLog.debug("state: ${mFormState.value}")
     }
 }

@@ -3,13 +3,21 @@ package com.krucha.kotlinsample.screen.auth.register
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.krucha.kotlinsample.R
+import com.krucha.kotlinsample.data.model.User
+import com.krucha.kotlinsample.data.repository.UserRepository
 import com.krucha.kotlinsample.features.auth.RegisterRepository
 import com.krucha.kotlinsample.screen.auth.register.model.*
 import com.krucha.kotlinsample.utils.*
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
-class RegisterViewModel @Inject constructor(private val registerRepository: RegisterRepository) : ViewModel() {
+class RegisterViewModel @Inject constructor(
+    private val registerRepository: RegisterRepository,
+    private val userRepository: UserRepository
+) : ViewModel() {
 
     private val mFormState = MutableLiveData<RegisterFormState>()
     private val mRegisterResult = MutableLiveData<RegisterResult>()
@@ -53,18 +61,22 @@ class RegisterViewModel @Inject constructor(private val registerRepository: Regi
         }
     }
 
-    fun register(loginData: RegisterViewData) {
-        val email = loginData.email
-        val password = loginData.password
+    fun register(registerData: RegisterViewData) {
+        if (!registerData.isFilled()) return
 
-        if (!email.isNullOrBlank() && !password.isNullOrBlank()) {
-            registerRepository.register(email, password) { success ->
-                if (success != null) {
-                    val registeredUser = RegisteredUser(R.string.register_succeed)
-                    mRegisterResult.value = RegisterResult.Success(registeredUser)
-                } else {
-                    mRegisterResult.value = RegisterResult.Error(R.string.login_failed)
-                }
+        viewModelScope.launch {
+            val registerResult = registerRepository.register(registerData.email as String, registerData.password as String)
+
+            Timber.d("Register result: $registerResult")
+            if (registerResult is Result.Success) {
+                val authUser = registerResult.data
+                val dbUser = User(id = authUser.id, email = authUser.email, name = authUser.name, gender = registerData.gender)
+                userRepository.insert(dbUser)
+
+                val registeredUser = RegisteredUser(R.string.register_succeed)
+                mRegisterResult.value = RegisterResult.Success(registeredUser)
+            } else {
+                mRegisterResult.value = RegisterResult.Error(R.string.login_failed)
             }
         }
     }
@@ -79,6 +91,5 @@ class RegisterViewModel @Inject constructor(private val registerRepository: Regi
                 && viewData.value?.isFilled() ?: false
 
         mFormState.value = newState.copy(isDataValid = isValid)
-        RegisterLog.debug("state: ${mFormState.value}")
     }
 }

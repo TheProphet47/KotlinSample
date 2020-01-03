@@ -17,5 +17,4 @@ abstract class DetailLiveData<T>(private val film: LiveData<Film>) : LiveData<T>
             value = fromFilm(film)
         })
     }
-
 }

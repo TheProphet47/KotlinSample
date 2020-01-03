@@ -8,11 +8,9 @@ import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.krucha.kotlinsample.CustomLog
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.data.model.Film
 import com.krucha.kotlinsample.data.repository.FilmRepository
-import com.krucha.kotlinsample.data.room.SampleDatabase
 import com.krucha.kotlinsample.di.injector
 import com.krucha.kotlinsample.features.auth.LoginRepository
 import com.krucha.kotlinsample.screen.detail.film.view.DetailFilmActivity
@@ -21,7 +19,6 @@ import com.krucha.kotlinsample.utils.setItemClickListener
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
