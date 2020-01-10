@@ -22,15 +22,15 @@ import timber.log.Timber
 class DetailFilmActivity : AppCompatActivity() {
 
     companion object {
-        const val ARG_CAN_DELETE = "isCanDelete"
+        const val ARG_IS_OWNER = "isUserOwner"
     }
 
     private val viewModel: DetailFilmViewModel by lazy {
         ViewModelProvider(this, injector.detailFilmViewModelFactory())[DetailFilmViewModel::class.java]
     }
 
-    private val isActionDeleteVisible by lazy {
-        intent.getBooleanExtra(ARG_CAN_DELETE, false)
+    val isUserOwner by lazy {
+        intent.getBooleanExtra(ARG_IS_OWNER, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +91,7 @@ class DetailFilmActivity : AppCompatActivity() {
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         menu?.let {
-            it.setGroupVisible(R.id.menu_group_delete, isActionDeleteVisible)
+            it.setGroupVisible(R.id.menu_group_delete, isUserOwner)
             it.setGroupVisible(R.id.menu_group_view, false)
             it.setGroupVisible(R.id.menu_group_edit, false)
         }

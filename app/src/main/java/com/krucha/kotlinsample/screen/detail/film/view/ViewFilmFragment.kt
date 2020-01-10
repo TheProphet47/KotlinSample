@@ -18,6 +18,10 @@ class ViewFilmFragment : BaseFilmFragment() {
         fun newInstance() = ViewFilmFragment()
     }
 
+    private val isUserOwner: Boolean by lazy {
+        (parentActivity as DetailFilmActivity).isUserOwner
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         Timber.d("FilmViewFragment")
@@ -31,7 +35,7 @@ class ViewFilmFragment : BaseFilmFragment() {
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
-        menu.setGroupVisible(R.id.menu_group_edit, true)
+        menu.setGroupVisible(R.id.menu_group_edit, isUserOwner)
     }
 
     private fun bindViewModel() {

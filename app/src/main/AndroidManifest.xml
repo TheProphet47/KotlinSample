@@ -18,7 +18,8 @@
 
         <activity
             android:name=".screen.auth.login.LoginActivity"
-            android:theme="@style/AppTheme.Auth">
+            android:theme="@style/AppTheme.Auth"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,7 +29,8 @@
 
         <activity
             android:name=".screen.auth.register.RegisterActivity"
-            android:theme="@style/AppTheme.Auth" />
+            android:theme="@style/AppTheme.Auth"
+            android:launchMode="singleTask" />
 
         <activity
             android:name=".screen.main.MainActivity"

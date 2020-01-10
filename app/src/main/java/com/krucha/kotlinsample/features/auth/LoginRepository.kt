@@ -10,16 +10,18 @@ import javax.inject.Inject
 class LoginRepository @Inject constructor(private val service: ILogin)
     : AuthScope by AuthScopeImpl {
 
-    init {
-        Timber.d("LoginRep $service")
-    }
-
     var user: AuthUser? = null
         private set
 
     val isAuth: Boolean
         get() = user != null
 
+    init {
+        if (service.isAuth) {
+            user = service.user
+            Timber.d("Silent login: $user")
+        }
+    }
 
     suspend fun login(email: String, password: String) = withContext(authScope.coroutineContext) {
         val loginResult = service.login(email, password)

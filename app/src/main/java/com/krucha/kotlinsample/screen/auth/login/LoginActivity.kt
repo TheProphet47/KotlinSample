@@ -3,6 +3,7 @@ package com.krucha.kotlinsample.screen.auth.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
@@ -37,7 +38,10 @@ class LoginActivity : AppCompatActivity() {
         password.afterTextChanged { text -> viewModel.passwordChanged(text) }
         password.setOnEditorActionListener { _, _, _ -> btnSignIn.callOnClick() }
 
-        btnSignIn.setOnClickListener { viewModel.login(getLoginData()) }
+        btnSignIn.setOnClickListener {
+            loading.visibility = ProgressBar.VISIBLE
+            viewModel.login(getLoginData())
+        }
         btnLinkToSignUp.setOnClickListener { startActivity(Intent(this, RegisterActivity::class.java)) }
     }
 
@@ -57,10 +61,12 @@ class LoginActivity : AppCompatActivity() {
         })
 
         viewModel.loginResult.observe(this, Observer {
+            loading.visibility = ProgressBar.GONE
             when(val loginResult = it ?: return@Observer) {
                 is LoginResult.Success -> {
                     startActivity(Intent(this, MainActivity::class.java))
                     showLoginSucceeded(loginResult.user)
+                    finishAffinity()
                 }
                 is LoginResult.Error -> showLoginFailed(loginResult.error)
             }

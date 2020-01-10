@@ -20,18 +20,24 @@ import kotlin.coroutines.suspendCoroutine
 @PerApp
 class FirebaseSource @Inject constructor(private val auth: FirebaseAuth) : ILogin, IRegister {
 
+    override val isAuth: Boolean
+        get() = auth.currentUser != null
+
+    override val user: AuthUser?
+        get() = auth.currentUser?.let { mapToAuthUser(it) }
+
     override suspend fun register(email: String, password: String): Result<AuthUser> {
         Timber.d("Register with $email and $password")
-        return authCall { mapToSuspendFun { auth.createUserWithEmailAndPassword(email, password) } }
+        return authCall { mapToSuspend { auth.createUserWithEmailAndPassword(email, password) } }
     }
 
     override suspend fun login(email: String, password: String): Result<AuthUser> {
         Timber.d("Login with $email and $password")
-        return authCall { mapToSuspendFun { auth.signInWithEmailAndPassword(email, password) } }
+        return authCall { mapToSuspend { auth.signInWithEmailAndPassword(email, password) } }
     }
 
     override fun logout() {
-        Timber.d("Logout ${auth.currentUser}")
+        Timber.d("Logout user ${auth.currentUser?.displayName}")
         auth.signOut()
     }
 
@@ -52,7 +58,7 @@ class FirebaseSource @Inject constructor(private val auth: FirebaseAuth) : ILogi
         return AuthUser(id = user.uid, email = user.email, name = user.displayName)
     }
 
-    private suspend inline fun mapToSuspendFun(crossinline firebaseCall: () -> Task<AuthResult>) =
+    private suspend inline fun mapToSuspend(crossinline firebaseCall: () -> Task<AuthResult>) =
         suspendCoroutine<Task<AuthResult>> { continuation ->
             firebaseCall().addOnCompleteListener(ContinuationListener(continuation))
         }
