@@ -29,7 +29,7 @@ class FilmsRvAdapter @Inject constructor(context: Context) : RecyclerView.Adapte
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.name.text = films[position].name
         holder.genre.text = films[position].genres?.joinToString(", ")
-        holder.owner.text = films[position].userId?.toString()
+        holder.owner.text = films[position].userId
 
         val path = films[position].imagePath
         holder.image.setImageURI(path?.let { Uri.parse(path) })

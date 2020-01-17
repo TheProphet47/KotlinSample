@@ -22,6 +22,4 @@ interface AppComponent {
     }
 
     fun activityComponentFactory(): ActivityComponent.Factory
-
-//    fun subcomponentBuilders(): Map < Class<*>?, Provider<SubcomponentFactory<out BaseComponent>> >
 }

@@ -5,30 +5,22 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.krucha.kotlinsample.R
 import com.krucha.kotlinsample.data.model.Film
-import com.krucha.kotlinsample.data.repository.FilmRepository
 import com.krucha.kotlinsample.di.injector
-import com.krucha.kotlinsample.features.auth.LoginRepository
 import com.krucha.kotlinsample.screen.auth.login.LoginActivity
 import com.krucha.kotlinsample.screen.detail.film.view.DetailFilmActivity
-import com.krucha.kotlinsample.screen.detail.film.viewmodel.DetailScreen
 import com.krucha.kotlinsample.utils.setItemClickListener
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainMvp.View {
 
     @Inject lateinit var filmsRvAdapter: FilmsRvAdapter
-    @Inject lateinit var filmRepository: FilmRepository
-    @Inject lateinit var loginRepository: LoginRepository
-
-    lateinit var films: LiveData<List<Film>>
+    @Inject lateinit var presenter: MainMvp.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,32 +28,30 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         injector.inject(this)
-
-        val user = loginRepository.user
-        films = filmRepository.films
+        presenter.view = this
 
         mainRvFilms.adapter = filmsRvAdapter
         mainRvFilms.layoutManager = LinearLayoutManager(this)
         mainRvFilms.setItemClickListener { _, position ->
-            val filmId = filmsRvAdapter.films[position].id
-            val intent = Intent(this@MainActivity, DetailFilmActivity::class.java)
-            intent.putExtra(Film.Table.NAME + Film.Field.ID, filmId)
-            intent.putExtra(DetailScreen::class.java.simpleName, DetailScreen.View())
-            intent.putExtra(DetailFilmActivity.ARG_IS_OWNER, filmsRvAdapter.films[position].userId == user?.id)
-            startActivity(intent)
+            presenter.onFilmItemClick(filmsRvAdapter.films[position].id)
         }
 
-        films.observe(this, Observer {
-            filmsRvAdapter.films = it ?: return@Observer
-        })
+        addFab.setOnClickListener { presenter.onAddFabClick() }
+    }
 
-        mainFab.setOnClickListener {
-            val intent = Intent(this@MainActivity, DetailFilmActivity::class.java)
-            intent.putExtra(DetailScreen::class.java.simpleName, DetailScreen.Edit())
-            intent.putExtra(DetailFilmActivity.ARG_IS_OWNER, true)
-            startActivity(intent)
-        }
+    override fun onResume() {
+        super.onResume()
+        presenter.subscribe()
+    }
 
+    override fun onPause() {
+        super.onPause()
+        presenter.unsubscribe()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.view = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -72,12 +62,22 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_action_logout -> {
-                loginRepository.logout()
+                presenter.logout()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finishAffinity()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun setFilms(films: List<Film>) {
+        filmsRvAdapter.films = films
+    }
+
+    override fun showFilmDetails(bundle: Bundle) {
+        val intent = Intent(this, DetailFilmActivity::class.java)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 }
